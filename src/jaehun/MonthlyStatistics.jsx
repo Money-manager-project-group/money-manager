@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react';
 
-// 팀원4 - 월간 통계 컴포넌트
+// 팀원4 - 월간 통계 컴포넌트 git
 const MonthlyStatistics = ({ onNavigateBack, onNavigateToAdd, onNavigateToDaily, onNavigateToCalendar }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
