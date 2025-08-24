@@ -7,7 +7,7 @@ const HouseholdCalendar = ({ onNavigateToDetail, onNavigateToAdd, onNavigateToSt
   const [currentDate, setCurrentDate] = useState(new Date());
 
  
-  
+  //git
   // 실제 연동 시 사용할 데이터 저장소 (현재= localStorage)
   const getStoredTransactions = () => {
     
