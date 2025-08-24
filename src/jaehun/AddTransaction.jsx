@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Save, Plus, Minus } from 'lucide-react';
 
-// 팀원1 - 수입/지출 추가 컴포넌트
+// 팀원1 - 수입/지출 추가 컴포넌트git
 const AddTransaction = ({ onNavigateBack, presetDate }) => {
   const [transactionType, setTransactionType] = useState('expense');
   const [selectedDate, setSelectedDate] = useState(
