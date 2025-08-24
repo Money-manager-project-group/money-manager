@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, Trash2, Edit3 } from 'lucide-react';
 
-// 팀원2 - 일별 상세페이지 컴포넌트
+// 팀원2 - 일별 상세페이지 컴포넌트git
 const DailyDetail = ({ selectedDate, onNavigateBack, onNavigateToAdd, onNavigateToEdit }) => {
   const [transactions, setTransactions] = useState([]);
   const [dailySummary, setDailySummary] = useState({
