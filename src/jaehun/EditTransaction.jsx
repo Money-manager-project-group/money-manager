@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Save, Plus, Minus } from 'lucide-react';
 
-// 팀원1 - 수입/지출 수정 컴포넌트
+// 팀원1 - 수입/지출 수정 컴포넌트git
 const EditTransaction = ({ transactionId, onNavigateBack }) => {
   const [transactionType, setTransactionType] = useState('expense');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
