@@ -1,63 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTransactions } from '../context/TransactionContext';
 
-const TransactionItem = () => {
-  
-  const { id } = useParams();
+const TransactionItem = ({ transaction }) => {
+  const { deleteTransaction } = useTransactions();
   const navigate = useNavigate();
-  const [transaction,setTransaction] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState(0);
+  const { id, text, amount, type } = transaction;
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('border')) || [];
-    setTransaction(saved[id]);
-    if(saved[id]){
-      setDescription(saved[id].description);
-      setAmount(saved[id].amount);
-    }},[id]);
+  const sign = type === 'income' ? '+' : '-';
+  const color = type === 'income' ? 'text-blue-500' : 'text-red-500';
 
-  const del = () => {
-    const saved = JSON.parse(localStorage.getItem('border')) || [];
-    const updated = saved.filter((item,index) => index !== Number(id));
-    localStorage.setItem('border', JSON.stringify(updated));
-    navigate('/table');
-  };
+  const formatNumber = (num) => {
+    return new Intl.NumberFormat('ko-KR').format(num);
+  }
 
-  const saveEdit = () => {
-    const saved = JSON.parse(localStorage.getItem('border')) || [];
-    saved[id] = { description, amount: Number(amount) };
-    localStorage.setItem('border', JSON.stringify(saved));
-    setTransaction(saved[id]);
-    setIsEditing(false);
-    navigate('/table');
-  };
-
-  if (!transaction) { return <div className="p-6">거래 내역을 찾을 수 없습니다.</div>; }
+  const handleEdit = () => {
+    navigate(`/edit/${id}`);
+  }
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">거래 상세</h2>
-      {isEditing ? (
-        <div className="space-y-4">
-          <input value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border rounded"/>
-          <input value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full p-2 border rounded"/>
-          <button onClick={saveEdit} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">저장</button>
-          <button onClick={() => setIsEditing(false)} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">취소</button>
-        </div>
-      ) : (
-        <div>
-          <p className="mb-2">내역: {transaction.description}</p>
-          <p className="mb-4">금액: {transaction.amount}원</p>
-          <div className="flex space-x-2">
-            <button onClick={() => navigate('/table')} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">돌아가기</button>
-            <button onClick={() => setIsEditing(true)} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">수정하기</button>
-            <button onClick={del} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">삭제하기</button>
-          </div>
-        </div>
-      )}
-    </div>
+    <li 
+      className="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer"
+      onClick={handleEdit}
+    >
+      <span>{text}</span>
+      <div className="flex items-center space-x-3">
+        <span className={`font-semibold ${color}`}>{sign} ₩{formatNumber(Math.abs(amount))}</span>
+        <button 
+          onClick={(e) => { 
+            e.stopPropagation(); // li의 onClick 이벤트(수정)가 실행되지 않도록 막습니다.
+            deleteTransaction(id); 
+          }} 
+          className="bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full opacity-75 hover:opacity-100"
+        >
+          X
+        </button>
+      </div>
+    </li>
   );
 };
 

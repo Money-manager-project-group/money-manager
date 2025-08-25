@@ -1,50 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useMemo } from 'react';
+import TransactionItem from './TransactionItem';
+import { useTransactions } from '../context/TransactionContext';
 
-const TransactionList = () => {
-  const [transactions, setTransactions] = useState([]);
+const TransactionList = ({ scope = 'day' }) => {
+  const { transactions, filteredTransactions, selectedDate } = useTransactions();
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!localStorage.getItem("border")) {
-      localStorage.setItem(
-        "border",
-        JSON.stringify([
-          { description: "커피", amount: 4500 },
-          { description: "점심", amount: 8500 },
-        ])
-      );
-    }
-    const saved = JSON.parse(localStorage.getItem("border"));
-    setTransactions(saved);
-  }, []);
+  const transactionsToDisplay = useMemo(() => {
+    if (scope === 'month') {
+      const targetYear = selectedDate.getFullYear();
+      const targetMonth = selectedDate.getMonth();
+      return transactions.filter(t => {
+        const transactionDate = new Date(t.date + 'T00:00');
+        return transactionDate.getFullYear() === targetYear && transactionDate.getMonth() === targetMonth;
+      }).sort((a, b) => new Date(b.date) - new Date(a.date)); // 최신 날짜 순으로 정렬
+    } 
+    return filteredTransactions;
+  }, [scope, transactions, filteredTransactions, selectedDate]);
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">가계부</h1>
-        <Link
-          to="/table/new"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          + 추가
-        </Link>
-      </div>
-
-      {transactions.length === 0 ? (
-        <p className="text-gray-500">등록된 거래 내역이 없습니다.</p>
+    <div className="p-4 bg-white rounded-lg shadow-inner">
+      <h3 className="text-lg font-bold mb-3">상세 내역</h3>
+      {transactionsToDisplay.length === 0 ? (
+        <p className="text-gray-500 text-center py-4">거래 내역이 없습니다.</p>
       ) : (
-        <ul className="space-y-4">
-          {transactions.map((t, index) => (
-            <li
-              key={index}
-              className="flex justify-between p-4 border rounded shadow-sm hover:shadow-md"
-              onClick={() => navigate(`/table/item/${index}`)}
-            >
-              <span>{t.description}</span>
-              <span className="font-semibold">{t.amount}원</span>
-            </li>
+        <ul className="space-y-2">
+          {transactionsToDisplay.map(transaction => (
+            <TransactionItem key={transaction.id} transaction={transaction} />
           ))}
         </ul>
       )}

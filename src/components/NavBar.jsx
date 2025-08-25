@@ -8,7 +8,7 @@ import setting from "../assets/setting.svg";
 const NavBar = () => {
   const imgClass = "w-7 inline-block mr-2 group-hover:invert-100";
   const liClass =
-    "px-4 py-2 flex justify-center w-fit h-fit hover:bg-black hover:text-white group";
+    "font-sans px-4 py-2 flex justify-center w-fit h-fit hover:bg-black hover:text-white group";
   return (
     <nav className="bg-white shadow-md text-[2vw] px-6 py-2 flex ">
       <ul className="flex space-x-8 ">
