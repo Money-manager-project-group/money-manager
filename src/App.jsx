@@ -24,7 +24,7 @@ function App() {
               <Route path="/calendar" element={<Calendar />}></Route>
               <Route path="/setting" element={<Setting />}></Route>
               <Route path="/table" element={<TransactionList />} />
-              <Route path="/table/crud" element={<TransactionForm />} />
+              <Route path="/table/new" element={<TransactionForm />} />
               <Route path="/table/item/:id" element={<TransactionItem />} />
               <Route path="*" element={<div>404 Page Not found</div>}></Route>
             </Routes>
