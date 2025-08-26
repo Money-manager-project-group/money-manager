@@ -36,7 +36,15 @@ const TransactionForm = () => {
 
   const setCost = (event, value) => {
     event.preventDefault();
-    setAmount((prev) => prev + value);
+    setAmount((prev) => {
+      if (prev) {
+        return parseInt(prev) + parseInt(value);
+      } else if (prev === 0) {
+        return value;
+      } else {
+        return value;
+      }
+    });
   };
 
   const handleSubmit = (e) => {
