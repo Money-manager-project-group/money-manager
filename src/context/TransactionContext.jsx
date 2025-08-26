@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext, useMemo, useEffect } from "react";
-import { getISODate } from "../utils/utility";
+import { getFormattedDate } from "../utils/utility";
 
 const TransactionContext = createContext();
 
@@ -13,6 +13,7 @@ export function useTransactions() {
   return context;
 }
 
+// 테스트용 데이터 - 지우기
 const testTransaction = [
   {
     id: 1,
@@ -58,6 +59,15 @@ export function TransactionProvider({ children }) {
   });
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [displayDate, setDisplayDate] = useState(new Date());
+
+  const changeMonth = (amount) => {
+    setDisplayDate((prevDate) => {
+      const newDate = new Date(prevDate);
+      newDate.setMonth(newDate.getMonth() + amount);
+      return newDate;
+    });
+  };
 
   // transactions 변화 값 localstorage 에 저장
   useEffect(() => {
@@ -74,7 +84,7 @@ export function TransactionProvider({ children }) {
       {
         ...transaction,
         id: Date.now(),
-        date: transaction.date || getISODate(new Date()), // 기본값 - 오늘 날짜
+        date: transaction.date,
       },
     ]);
   };
@@ -93,10 +103,24 @@ export function TransactionProvider({ children }) {
     return transactions.find((t) => t.id === id);
   };
 
-  const filteredTransactions = useMemo(() => {
-    const selectedDateStr = getISODate(selectedDate);
+  const filteredTransactionsByDay = useMemo(() => {
+    const selectedDateStr = getFormattedDate(selectedDate);
     return transactions.filter((t) => t.date === selectedDateStr);
   }, [transactions, selectedDate]);
+
+  const filteredTransactionsByMonth = useMemo(() => {
+    const targetYear = displayDate.getFullYear();
+    const targetMonth = displayDate.getMonth();
+    return transactions
+      .filter((t) => {
+        const transactionDate = new Date(t.date + "T00:00");
+        return (
+          transactionDate.getFullYear() === targetYear &&
+          transactionDate.getMonth() === targetMonth
+        );
+      })
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  }, [transactions, displayDate]);
 
   const value = {
     transactions,
@@ -106,7 +130,11 @@ export function TransactionProvider({ children }) {
     getTransactionById,
     selectedDate,
     setSelectedDate,
-    filteredTransactions,
+    displayDate,
+    setDisplayDate,
+    changeMonth,
+    filteredTransactionsByDay,
+    filteredTransactionsByMonth,
   };
 
   return (

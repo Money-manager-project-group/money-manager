@@ -29,12 +29,12 @@ const TransactionItem = ({ transaction }) => {
         </span>
         <button
           onClick={(e) => {
-            e.stopPropagation(); // li의 onClick 이벤트(수정)가 실행되지 않도록 막습니다.
+            e.stopPropagation();
             deleteTransaction(id);
           }}
-          className="bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full opacity-75 hover:opacity-100"
+          className="bg-red-500 text-white text-xs w-8 h-6 flex items-center justify-center rounded opacity-75 hover:opacity-100"
         >
-          X
+          삭제
         </button>
       </div>
     </li>

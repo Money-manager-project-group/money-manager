@@ -3,7 +3,7 @@ function twoDigit(number) {
   return number;
 }
 
-export function getISODate(date) {
+export function getFormattedDate(date) {
   if (!date) {
     return new Date().getDate();
   }

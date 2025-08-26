@@ -4,25 +4,20 @@ import { formatKoreanDate, formatKoreanMonth } from "../utils/utility";
 
 const Stats = ({ scope = "day" }) => {
   // 기본값은 'day'
-  const { transactions, filteredTransactions, selectedDate } =
-    useTransactions();
+  const {
+    filteredTransactionsByDay,
+    filteredTransactionsByMonth,
+    selectedDate,
+    displayDate,
+  } = useTransactions();
 
   const transactionsToDisplay = useMemo(() => {
-    if (scope === "month") {
-      const targetYear = selectedDate.getFullYear();
-      const targetMonth = selectedDate.getMonth();
-      return transactions.filter((t) => {
-        // UTC 날짜 기준으로 생성된 new Date가 현지 시간대와 달라 생기는 문제를 막기 위해, 날짜 문자열에 T00:00을 더해 같은 기준으로 비교
-        const transactionDate = new Date(t.date + "T00:00");
-        return (
-          transactionDate.getFullYear() === targetYear &&
-          transactionDate.getMonth() === targetMonth
-        );
-      });
-    }
-    // scope가 'day'이거나 지정되지 않은 경우
-    return filteredTransactions;
-  }, [scope, transactions, filteredTransactions, selectedDate]);
+    return scope === "month"
+      ? filteredTransactionsByMonth
+      : filteredTransactionsByDay;
+  }, [scope, filteredTransactionsByDay, filteredTransactionsByMonth]);
+
+  const dateForTitle = scope === "month" ? displayDate : selectedDate;
 
   const income = transactionsToDisplay
     .filter((t) => t.type === "income")
@@ -42,8 +37,8 @@ const Stats = ({ scope = "day" }) => {
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4 text-center">
         {scope === "month"
-          ? formatKoreanMonth(selectedDate) + " 내역"
-          : formatKoreanDate(selectedDate) + " 내역"}
+          ? formatKoreanMonth(dateForTitle) + " 내역"
+          : formatKoreanDate(dateForTitle) + " 내역"}
       </h2>
       <div className="flex justify-around">
         <div className="text-center">
