@@ -5,7 +5,7 @@ import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Table from "./components/Table";
-import TransactionForm from "./components/TransactionForm"; // 폼 임포트
+import TransactionForm from "./components/TransactionForm";
 import { TransactionProvider } from "./context/TransactionContext";
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/setting" element={<Setting />} />
               <Route path="/new" element={<TransactionForm />} />
+              <Route path="/new/:date" element={<TransactionForm />} />
               <Route path="/edit/:id" element={<TransactionForm />} />
               <Route path="*" element={<div>404 Page Not found</div>} />
             </Routes>

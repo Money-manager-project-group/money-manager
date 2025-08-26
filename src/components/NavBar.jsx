@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import home from "../assets/piggybank.svg";
 import calendar from "../assets/calendar.svg";
