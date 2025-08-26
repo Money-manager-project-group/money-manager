@@ -4,13 +4,13 @@ import { useTransactions } from '../context/TransactionContext';
 
 const TransactionForm = () => {
   const { addTransaction, updateTransaction, getTransactionById, selectedDate } = useTransactions();
-  const { id } = useParams();
+  const { id, date: urlDate } = useParams();
   const navigate = useNavigate();
 
   const [text, setText] = useState("");
   const [amount, setAmount] = useState('');
   const [type, setType] = useState('expense');
-  const [date, setDate] = useState(selectedDate.toISOString().split('T')[0]);
+  const [date, setDate] = useState(urlDate || selectedDate.toISOString().split('T')[0]);
 
   const isEditing = !!id;
 
@@ -21,10 +21,12 @@ const TransactionForm = () => {
         setText(transaction.text);
         setAmount(Math.abs(transaction.amount));
         setType(transaction.type);
-        setDate(transaction.date);
+        if (!urlDate) {
+          setDate(transaction.date);
+        }
       }
     }
-  }, [id, isEditing, getTransactionById]);
+  }, [id, isEditing, getTransactionById, urlDate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

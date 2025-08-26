@@ -1,20 +1,20 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css'; // 기본 스타일
-import { useTransactions } from '../context/TransactionContext';
-import Stats from './Stats';
-import TransactionList from './TransactionList';
+import { Link } from "react-router-dom";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { useTransactions } from "../context/TransactionContext";
+import Stats from "./Stats";
+import TransactionList from "./TransactionList";
+import { getISODate } from "../utils/utility";
 
 const CalendarView = () => {
   const { selectedDate, setSelectedDate, transactions } = useTransactions();
 
   // 각 날짜에 거래가 있는지 표시하기 위한 함수
   const tileClassName = ({ date, view }) => {
-    if (view === 'month') {
-      const dateString = new Date(date).toISOString().split('T')[0];
-      if (transactions.some(t => t.date === dateString)) {
-        return 'has-transaction'; // 이 클래스에 CSS로 스타일을 추가할 수 있습니다.
+    if (view === "month") {
+      const dateString = getISODate(new Date(date));
+      if (transactions.some((t) => t.date === dateString)) {
+        return "has-transaction"; // 이 클래스에 CSS로 스타일을 추가할 수 있습니다.
       }
     }
     return null;
@@ -43,14 +43,17 @@ const CalendarView = () => {
           background-color: #ef4444; /* red-500 */
         }
       `}</style>
-      <Calendar 
-        onChange={setSelectedDate} 
-        value={selectedDate} 
+      <Calendar
+        onChange={setSelectedDate}
+        value={selectedDate}
         tileClassName={tileClassName}
         formatDay={(locale, date) => new Date(date).getDate()} // 날짜에서 '일' 제거
       />
       <div className="flex justify-end">
-        <Link to="/new" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-semibold">
+        <Link
+          to={`/new/${getISODate(selectedDate)}`}
+          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-semibold"
+        >
           선택 날짜에 내역 추가
         </Link>
       </div>
