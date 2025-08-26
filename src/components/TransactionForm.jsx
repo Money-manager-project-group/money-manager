@@ -36,7 +36,7 @@ const TransactionForm = () => {
 
   const setCost = (event, value) => {
     event.preventDefault();
-    setAmount(value);
+    setAmount((prev) => prev + value);
   };
 
   const handleSubmit = (e) => {
@@ -134,7 +134,7 @@ const TransactionForm = () => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            자주쓰는 금액
+            자주쓰는 금액 (누르면 추가)
           </label>
           <div className="flex space-x-2 pt-4">
             <button
