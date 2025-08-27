@@ -4,7 +4,7 @@ import TransactionList from "./TransactionList";
 import { useTransactions } from "../context/TransactionContext";
 import { formatKoreanMonth } from "../utils/utility";
 
-const Table = () => {
+const ListPage = () => {
   const { displayDate, changeMonth } = useTransactions();
 
   return (
@@ -69,4 +69,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default ListPage;

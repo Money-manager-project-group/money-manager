@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Setting from "./components/Setting";
-import Calendar from "./components/Calendar";
-import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import Table from "./components/Table";
+import HomePage from "./components/HomePage";
+import ListPage from "./components/ListPage";
+import CalendarPage from "./components/CalendarPage";
+import Setting from "./components/Setting";
 import TransactionForm from "./components/TransactionForm";
 import { TransactionProvider } from "./context/TransactionContext";
 
@@ -12,15 +12,15 @@ function App() {
   return (
     <TransactionProvider>
       <BrowserRouter>
-        <div className="h-screen flex flex-col">
+        <div className="h-screen flex flex-col scrollbar-hidden overflow-y-scroll">
           <header>
             <NavBar />
           </header>
           <main className="flex-grow container mx-auto p-4">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/table" element={<Table />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/table" element={<ListPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/setting" element={<Setting />} />
               <Route path="/new" element={<TransactionForm />} />
               <Route path="/new/:date" element={<TransactionForm />} />

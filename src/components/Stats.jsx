@@ -29,10 +29,6 @@ const Stats = ({ scope = "day" }) => {
 
   const total = income + expense;
 
-  const formatNumber = (num) => {
-    return new Intl.NumberFormat("ko-KR").format(num);
-  };
-
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4 text-center">
@@ -42,25 +38,29 @@ const Stats = ({ scope = "day" }) => {
       </h2>
       <div className="flex justify-around">
         <div className="text-center">
-          <p className="text-lg text-blue-600">수입</p>
-          <p className="text-2xl font-semibold text-blue-600">
-            ₩{formatNumber(income)}
+          <p className="text-lg text-blue-700 font-bold">수입</p>
+          <p className="text-2xl font-semibold text-blue-700">
+            ₩{income.toLocaleString("ko-KR")}
           </p>
         </div>
         <div className="text-center">
-          <p className="text-lg text-red-600">지출</p>
-          <p className="text-2xl font-semibold text-red-600">
-            ₩{formatNumber(Math.abs(expense))}
+          <p className="text-lg text-rose-700 font-bold">지출</p>
+          <p className="text-2xl font-semibold text-rose-700">
+            ₩{Math.abs(expense).toLocaleString("ko-KR")}
           </p>
         </div>
         <div className="text-center">
-          <p className="text-lg">합계</p>
+          <p className="text-lg font-bold">합계</p>
           <p
             className={`text-2xl font-semibold ${
-              total >= 0 ? "text-gray-800" : "text-red-600"
+              total > 0
+                ? "text-blue-700"
+                : total == 0
+                ? "text-gray-800"
+                : "text-rose-700"
             }`}
           >
-            ₩{formatNumber(total)}
+            ₩{total.toLocaleString("ko-KR")}
           </p>
         </div>
       </div>

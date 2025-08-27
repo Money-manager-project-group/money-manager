@@ -95,7 +95,7 @@ const TransactionForm = () => {
               onClick={() => setType("income")}
               className={`w-full p-2 rounded-md ${
                 type === "income"
-                  ? "bg-blue-500 text-white"
+                  ? "bg-blue-700 text-white"
                   : "bg-gray-200 hover:bg-blue-200"
               }`}
             >
@@ -106,8 +106,8 @@ const TransactionForm = () => {
               onClick={() => setType("expense")}
               className={`w-full p-2 rounded-md ${
                 type === "expense"
-                  ? "bg-red-500 text-white"
-                  : "bg-gray-200 hover:bg-red-200"
+                  ? "bg-rose-700 text-white"
+                  : "bg-gray-200 hover:bg-rose-200"
               }`}
             >
               지출

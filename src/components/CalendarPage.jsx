@@ -6,17 +6,36 @@ import Stats from "./Stats";
 import TransactionList from "./TransactionList";
 import { getFormattedDate } from "../utils/utility";
 
-const CalendarView = () => {
+const CalendarPage = () => {
   const { selectedDate, setSelectedDate, transactions } = useTransactions();
 
   const tileClassName = ({ date, view }) => {
+    let className = " border-r-2 ";
     if (view === "month") {
       const dateString = getFormattedDate(new Date(date));
       if (transactions.some((t) => t.date === dateString)) {
-        return "has-transaction";
+        className +=
+          " relative after:absolute after:bottom-[10%] after:left-2/4 after:-translate-x-1/2 after:w-[6px] after:h-[6px] after:rounded-[50%] ";
+        const dailyTransactions = transactions.filter(
+          (t) => t.date === dateString
+        );
+        const dailyIncome = dailyTransactions
+          .filter((t) => t.type === "income")
+          .reduce((acc, t) => acc + t.amount, 0);
+
+        const dailyExpense = dailyTransactions
+          .filter((t) => t.type === "expense")
+          .reduce((acc, t) => acc + t.amount, 0);
+
+        className +=
+          dailyIncome + dailyExpense > 0
+            ? " after:bg-blue-700 "
+            : dailyIncome + dailyExpense == 0
+            ? " after:bg-gray-500 "
+            : " after:bg-rose-700 ";
       }
     }
-    return null;
+    return className;
   };
 
   return (
@@ -27,25 +46,12 @@ const CalendarView = () => {
           border-radius: 0.5rem;
           border: 1px solid #e5e7eb;
         }
-        .has-transaction {
-          position: relative;
-        }
-        .has-transaction::after {
-          content: '';
-          position: absolute;
-          bottom: 10%;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background-color: #ef4444; /* red-500 */
-        }
       `}</style>
       <Calendar
         onChange={setSelectedDate}
         value={selectedDate}
         tileClassName={tileClassName}
+        calendarType="gregory"
         formatDay={(locale, date) => new Date(date).getDate()}
       />
       <div className="flex justify-end">
@@ -62,4 +68,4 @@ const CalendarView = () => {
   );
 };
 
-export default CalendarView;
+export default CalendarPage;

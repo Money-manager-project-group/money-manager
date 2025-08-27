@@ -7,11 +7,7 @@ const TransactionItem = ({ transaction }) => {
   const { id, text, amount, type } = transaction;
 
   const sign = type === "income" ? "+" : "-";
-  const color = type === "income" ? "text-blue-500" : "text-red-500";
-
-  const formatNumber = (num) => {
-    return new Intl.NumberFormat("ko-KR").format(num);
-  };
+  const color = type === "income" ? "text-blue-700" : "text-rose-700";
 
   const handleEdit = () => {
     navigate(`/edit/${id}`);
@@ -25,14 +21,14 @@ const TransactionItem = ({ transaction }) => {
       <span>{text}</span>
       <div className="flex items-center space-x-3">
         <span className={`font-semibold ${color}`}>
-          {sign} ₩{formatNumber(Math.abs(amount))}
+          {sign} ₩{Math.abs(amount).toLocaleString("ko-KR")}
         </span>
         <button
           onClick={(e) => {
             e.stopPropagation();
             deleteTransaction(id);
           }}
-          className="bg-red-500 text-white text-xs w-8 h-6 flex items-center justify-center rounded opacity-75 hover:opacity-100"
+          className="bg-rose-400 text-white text-xs w-8 h-6 flex items-center justify-center rounded opacity-75 hover:opacity-100"
         >
           삭제
         </button>
